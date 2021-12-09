@@ -1,19 +1,23 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
-from register.models import CData
+from home.models import CData
+from register.models import Patient, CovidPatient
 
 # Create your views here.
 def home(request):
-    cd = CData.objects.get(id=2)
+    cdata = CData.objects.get(id=1)
+    cdata.total = len(Patient.objects.all())
+    cdata.treatment = len(CovidPatient.objects.all())
+    cdata.save()
     context = {
-        'btname': 'Login', 
+        'btname': 'Login',
         'btna': '/login', 
-        'total_patents': cd.total_patient(), 
-        'covid_patents': cd.covid_patient(),
-        'under_treatment': cd.under_treatment(),
-        'total_recovered': cd.total_recovered(),
-        'total_dead': cd.total_dead(),
-        'total_discharged': cd.total_discharged(),
+        'total_patents': cdata.total, 
+        'covid_patents': cdata.covid,
+        'under_treatment': cdata.treatment,
+        'total_recovered': cdata.recovered,
+        'total_dead': cdata.dead,
+        'total_discharged': cdata.discharged,
         }
 
     if request.user.is_authenticated:

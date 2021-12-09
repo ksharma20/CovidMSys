@@ -1,10 +1,11 @@
 from django.shortcuts import redirect, render
+from home.models import CData
+from register.models import Patient, CovidPatient
 
-from register.models import CData, Patient, CovidPatient
 
-cdata = CData.objects.get(id=2)
 # Create your views here.
 def dashboard(request):
+    cdata = CData.objects.get(id=1)
     if request.user.is_authenticated:
         ptname = None
 
@@ -12,34 +13,37 @@ def dashboard(request):
             name = request.POST.get('name')
             dob = request.POST.get('dob')
             gender = request.POST.get('gender')
-            fever = request.POST.get('fever')
-            cough = request.POST.get('cough')
-            headache = request.POST.get('headache')
-            diarrhea = request.POST.get('diarrhea')
-            tasteless = request.POST.get('tasteless')
-            symptoms = [True if syp!=None else False for syp in [fever, cough, headache, diarrhea, tasteless] ]
+            fever = bool(request.POST.get('fever'))
+            cough = bool(request.POST.get('cough'))
+            headache = bool(request.POST.get('headache'))
+            diarrhea = bool(request.POST.get('diarrhea'))
+            tasteless = bool(request.POST.get('tasteless'))
+            symptoms = [fever, cough, headache, diarrhea, tasteless]
             patient = Patient.objects.create(name=name,dob=dob,gender=gender,fever=symptoms[0],cough=symptoms[1],headache=symptoms[2],diarrhea=symptoms[3],tasteless=symptoms[4])
             
             if symptoms.count(True) > 2:
-                ptname = cdata.add_patient(patient.id)
+                ptname, created = CovidPatient.objects.get_or_create(patient=patient)
+                if created:
+                    cdata.covid += 1
+                    cdata.save()
         
         if ptname:
-            context = {'patients': reversed(Patient.objects.all()) , 'covid_patients': reversed(CovidPatient.objects.all()) , 'ptname': ptname}
+            context = {'patients': reversed(Patient.objects.all()) , 'covid_patients': reversed(CovidPatient.objects.all()) , 'ptname': ptname.patient.name}
         else: context = {'patients': reversed(Patient.objects.all()) , 'covid_patients': reversed(CovidPatient.objects.all())}
 
         return render(request, 'dashboard.html', context)
     else: return redirect('/login')
 
 def edit(request, id):
+    cdata = CData.objects.get(id=1)
     if request.user.is_authenticated:
         ptname = None
         patient = Patient.objects.get(id=id)
         if request.method == 'POST':
             patient.name = request.POST.get('name')
-            patient.dob = request.POST.get('dob')
             patient.gender = request.POST.get('gender')
 
-            symptoms = [True if syp!=None else False for syp in [request.POST.get('fever'), request.POST.get('cough'), request.POST.get('headache'), request.POST.get('diarrhea'), request.POST.get('tasteless')] ]
+            symptoms = [bool(request.POST.get('fever')), bool(request.POST.get('cough')), bool(request.POST.get('headache')), bool(request.POST.get('diarrhea')), bool(request.POST.get('tasteless'))]
             
             patient.fever = symptoms[0]
             patient.cough = symptoms[1]
@@ -50,14 +54,17 @@ def edit(request, id):
             patient.save()
             
             if symptoms.count(True) > 2:
-                ptname = cdata.add_patient(patient.id)
+                ptname, created = CovidPatient.objects.get_or_create(patient=patient)
+                if created:
+                    cdata.covid += 1
+                    cdata.save()
         
             if ptname:
-                context = {'patients': reversed(Patient.objects.all()) , 'covid_patients': reversed(CovidPatient.objects.all()) , 'ptname': ptname}
+                context = {'patients': reversed(Patient.objects.all()) , 'covid_patients': reversed(CovidPatient.objects.all()) , 'ptname': ptname.patient.name}
             else: context = {'patients': reversed(Patient.objects.all()) , 'covid_patients': reversed(CovidPatient.objects.all())}
     
             return redirect('/dashboard/')
-
+        print('Patient Gender: ',patient.gender)
         context = {
         'patients': reversed(Patient.objects.all()), 
         'covid_patients': reversed(CovidPatient.objects.all()),
@@ -68,22 +75,31 @@ def edit(request, id):
 
 
 def recovered(request, id):
+    cdata = CData.objects.get(id=1)
     if request.user.is_authenticated:
-        cdata.add_recovered(id)
+        cdata.recovered += 1
+        cdata.save()
+        CovidPatient.objects.get(id=id).delete()
         return redirect('/dashboard/')
     
     else: return redirect('/login')
 
 def dead(request, id):
+    cdata = CData.objects.get(id=1)
     if request.user.is_authenticated:
-        cdata.add_dead(id)
+        cdata.dead += 1
+        cdata.save()
+        CovidPatient.objects.get(id=id).delete()
         return redirect('/dashboard/')
     
     else: return redirect('/login')
 
 def discharged(request, id):
+    cdata = CData.objects.get(id=1)
     if request.user.is_authenticated:
-        cdata.add_discharged(id)
+        cdata.discharged += 1
+        cdata.save()
+        CovidPatient.objects.get(id=id).delete()
         return redirect('/dashboard/')
     
     else: return redirect('/login')
