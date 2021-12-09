@@ -1,0 +1,70 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1"> -->
+    <title>Signin | CovidMSys</title>
+
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/bootstrap.css' %}" rel="stylesheet" type="text/css">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-center container my-5 pt-5">
+
+    <main class="form-signin text-center">
+        <center>
+            <h3> Welcome to Covid Management System</h3>
+            <form style="width: 50%; padding-top: 12%;" method="post">
+                {% csrf_token %}
+                <!-- <img class="mb-4" src="..." alt="" width="72" height="57"> -->
+                <h1 class="h3 mb-3 fw-normal my-3">Please sign in</h1>
+
+                <div class="form-floating my-2">
+                    <input name='uname' type="text" class="form-control" id="floatingInput" placeholder="uname">
+                    <label for="floatingInput">userName</label>
+                </div>
+                <div class="form-floating my-2">
+                    <input name='passwd' type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+
+                <div class="checkbox my-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary my-3" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2021 | CovidMSys</p>
+            </form>
+        </center>
+    </main>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'bootstrap/bootstrap.css' %}" rel="stylesheet" type="text/css">
+
+    <style>
+        {% block style %} {% endblock style %}
+    </style>
+
+    <title>{% block title %} {% endblock title %} | Covid MSys</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Covid Msys</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+            <form class="d-flex" action='{% block btna %}{% endblock btna %}'>
+              <button class="btn btn-outline-success" type="submit" >{% block btname %}{% endblock btname %}</button>
+            </form>
+          </div>
+        </div>
+    </nav>
+    
+    {% block body %} {% endblock body %}
+    <footer class="bg-dark text-center text-white" style="position: fixed; bottom: 0; width: 100%;">
+      {% block footer %} {% endblock footer %}
+      
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2021 Copyright:
+          <a class="text-white" href="#">CovidMSys</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="{% static 'bootstrap/bootstrap.bundle.js' %}" type="text/javascript"></script>
+  </body>
+</html>
