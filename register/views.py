@@ -19,7 +19,7 @@ def dashboard(request):
             diarrhea = bool(request.POST.get('diarrhea'))
             tasteless = bool(request.POST.get('tasteless'))
             symptoms = [fever, cough, headache, diarrhea, tasteless]
-            patient = Patient.objects.create(name=name,dob=dob,gender=gender,fever=symptoms[0],cough=symptoms[1],headache=symptoms[2],diarrhea=symptoms[3],tasteless=symptoms[4])
+            patient, _ = Patient.objects.get_or_create(name=name,dob=dob,gender=gender,fever=symptoms[0],cough=symptoms[1],headache=symptoms[2],diarrhea=symptoms[3],tasteless=symptoms[4])
             
             if symptoms.count(True) > 2:
                 ptname, created = CovidPatient.objects.get_or_create(patient=patient)

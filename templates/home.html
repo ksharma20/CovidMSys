@@ -9,10 +9,10 @@
 
 {% block body %}
 
-<main class="container fluid">
-  <center> <h3 style="margin-top: 2.5%;"> <u><i> Welcome to Covid Managment System</h3> </i> </u></center>
+<main class="container-fluid vh-90">
+  <h2 class="text-center mt-5">Welcome to Covid Record Managment System</h2>
 
-  <div style="display: flex; flex-wrap: wrap; flex-basis: 50%; padding-left: 11%;">
+  <div class="container" style="display: flex; flex-wrap: wrap; padding: 0% 5%;">
 
   <div class="card mx-5 my-5" style="width: 15rem; height: 15rem; align-items: center;">
     <h4 class="card-title my-3">Total Patients</h4>
@@ -42,46 +42,3 @@
 </main>
 
 {% endblock body %}
-
-{% comment %} {% block footer %}
-<!-- Grid container -->
-<div class="container p-4 pb-0">
-    <!-- Section: Form -->
-    <section class="">
-      <form action="">
-        <!--Grid row-->
-        <div class="row d-flex justify-content-center">
-          <!--Grid column-->
-          <div class="col-auto">
-            <p class="pt-2">
-            Sign up Your Hospital for Covid Record Managment
-            </p>
-          </div>
-          <!--Grid column-->
-          
-          <!--Grid column-->
-          <div class="col-md-5 col-12">
-            <!-- Name input -->
-            <div class="form-outline form-white mb-4">
-              <input type="text" id="rn" class="form-control" placeholder="Type your Registered Hospital Name"/>
-            </div>
-          </div>
-          <!--Grid column-->
-          
-          <!--Grid column-->
-          <div class="col-auto">
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-outline-light mb-4">
-              join
-            </button>
-          </div>
-          <!--Grid column-->
-        </div>
-        <!--Grid row-->
-      </form>
-    </section>
-    <!-- Section: Form -->
-  </div>
-  <!-- Grid container -->
-{% endblock footer %} {% endcomment %}
-
